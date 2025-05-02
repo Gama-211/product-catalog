@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Categorias{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3"><i class="fas fa-tags me-2"></i>Gerenciar Categorias</h1>
+    
+    <div>
+        <a href="{{ url_for('admin_panel') }}" class="btn btn-outline-primary me-2">
+            <i class="fas fa-arrow-left me-1"></i> Voltar para Produtos
+        </a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            <i class="fas fa-plus me-1"></i> Nova Categoria
+        </button>
+    </div>
+</div>
+
+<!-- Lista de Categorias -->
+<div class="card shadow-sm">
+    <div class="card-header bg-light">
+        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Categorias Cadastradas</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.name }}</td>
+                        <td>{{ category.description }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editCategoryModal" 
+                                   data-id="{{ category.id }}"
+                                   data-name="{{ category.name }}"
+                                   data-description="{{ category.description }}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                {% if category.id != 1 %}
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" 
+                                   data-id="{{ category.id }}" data-name="{{ category.name }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                {% else %}
+                                <button class="btn btn-danger" disabled title="Categoria padrão não pode ser excluída">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i> Nenhuma categoria cadastrada além da padrão.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adicionar Categoria -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Adicionar Nova Categoria</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('add_category') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome da Categoria</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Categoria</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Categoria -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Categoria</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editCategoryForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-name" class="form-label">Nome da Categoria</label>
+                        <input type="text" class="form-control" id="edit-name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-description" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="edit-description" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Atualizar Categoria</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Excluir Categoria -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirmar Exclusão</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir a categoria <strong id="delete-category-name"></strong>?</p>
+                <p class="text-danger"><small>Esta ação não poderá ser desfeita!</small></p>
+                <p><strong>Nota:</strong> Todos os produtos desta categoria serão movidos para a categoria "Geral".</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteCategoryForm" method="POST">
+                    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Para o modal de edição
+    const editCategoryModal = document.getElementById('editCategoryModal');
+    if (editCategoryModal) {
+        editCategoryModal.addEventListener('show.bs.modal', function (event) {
+            // Botão que acionou o modal
+            const button = event.relatedTarget;
+            
+            // Extrair informações dos data attributes
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const description = button.getAttribute('data-description');
+            
+            // Atualizar os campos do formulário
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-description').value = description;
+            
+            // Atualizar a action do formulário
+            const form = document.getElementById('editCategoryForm');
+            form.action = '/admin/categories/edit/' + id;
+        });
+    }
+    
+    // Para o modal de exclusão
+    const deleteCategoryModal = document.getElementById('deleteCategoryModal');
+    if (deleteCategoryModal) {
+        deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
+            // Botão que acionou o modal
+            const button = event.relatedTarget;
+            
+            // Extrair informações dos data attributes
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            
+            // Atualizar o texto de confirmação
+            document.getElementById('delete-category-name').textContent = name;
+            
+            // Atualizar a action do formulário
+            const form = document.getElementById('deleteCategoryForm');
+            form.action = '/admin/categories/delete/' + id;
+        });
+    }
+</script>
+{% endblock %}

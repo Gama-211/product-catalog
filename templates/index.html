@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Todah Loja Virtual{% endblock %}
+
+{% block content %}
+<!-- Seção de últimos produtos -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="display-5 text-center">Produtos Exclusivos</h1>
+        <p class="lead text-center">Qualidade e elegância para você. Entre em contato para adquirir!</p>
+    </div>
+</div>
+
+<!-- Navegação por categorias -->
+<div class="row mb-4">
+    <div class="col-12">
+        <nav class="nav nav-pills nav-fill category-nav">
+            <a class="nav-link {% if not current_category %}active{% endif %}" href="{{ url_for('index') }}">
+                Todos os Produtos
+            </a>
+            {% for category in categories %}
+            <a class="nav-link {% if current_category and current_category.id == category.id %}active{% endif %}" 
+               href="{{ url_for('index', category=category.id) }}">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </nav>
+    </div>
+</div>
+
+<!-- Últimos produtos -->
+{% if latest_products and not current_category %}
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="h4 pb-2 mb-4 border-bottom" style="border-color: var(--todah-secondary) !important;">
+            <i class="fas fa-star me-2 text-warning"></i>Últimos Lançamentos
+        </h2>
+    </div>
+    
+    <div class="col-12">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4">
+            {% for product in latest_products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm product-card">
+                    {% if product.image %}
+                    <img src="{{ url_for('static', filename=product.image) }}" class="card-img-top product-image" alt="{{ product.name }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/products/no-image.jpg') }}" class="card-img-top product-image" alt="Imagem não disponível">
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <span class="badge bg-primary mb-2">{{ product.category_name }}</span>
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text description">{{ product.description }}</p>
+                        <p class="card-text price">R$ {{ "%.2f"|format(product.price) }}</p>
+                        
+                        {% if product.stock > 0 %}
+                        <a href="https://wa.me/55SEUNUMERO?text=Oi%2C+quero+comprar+o+produto+{{ product.name|urlencode }}" 
+                           class="btn btn-success w-100" target="_blank">
+                            <i class="fab fa-whatsapp me-1"></i> Comprar
+                        </a>
+                        <small class="text-muted">Estoque: {{ product.stock }} unidade(s)</small>
+                        {% else %}
+                        <button class="btn btn-secondary w-100" disabled>
+                            Produto esgotado
+                        </button>
+                        <small class="text-danger">Sem estoque disponível</small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Título da categoria atual (se estiver filtrando) -->
+{% if current_category %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="h4 pb-2 mb-4 border-bottom" style="border-color: var(--todah-secondary) !important;">
+            <i class="fas fa-tag me-2"></i>{{ current_category.name }}
+            <small class="text-muted">{{ current_category.description }}</small>
+        </h2>
+    </div>
+</div>
+{% elif not current_category and products %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="h4 pb-2 mb-4 border-bottom" style="border-color: var(--todah-secondary) !important;">
+            <i class="fas fa-list me-2"></i>Todos os Produtos
+        </h2>
+    </div>
+</div>
+{% endif %}
+
+<!-- Lista de produtos -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for product in products %}
+    <div class="col">
+        <div class="card h-100 shadow-sm product-card">
+            {% if product.image %}
+            <img src="{{ url_for('static', filename=product.image) }}" class="card-img-top product-image" alt="{{ product.name }}">
+            {% else %}
+            <img src="{{ url_for('static', filename='img/products/no-image.jpg') }}" class="card-img-top product-image" alt="Imagem não disponível">
+            {% endif %}
+            
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">{{ product.category_name }}</span>
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text description">{{ product.description }}</p>
+                <p class="card-text price">R$ {{ "%.2f"|format(product.price) }}</p>
+                
+                {% if product.stock > 0 %}
+                <a href="https://wa.me/55SEUNUMERO?text=Oi%2C+quero+comprar+o+produto+{{ product.name|urlencode }}" 
+                   class="btn btn-success w-100" target="_blank">
+                    <i class="fab fa-whatsapp me-1"></i> Comprar
+                </a>
+                <small class="text-muted">Estoque: {{ product.stock }} unidade(s)</small>
+                {% else %}
+                <button class="btn btn-secondary w-100" disabled>
+                    Produto esgotado
+                </button>
+                <small class="text-danger">Sem estoque disponível</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center my-5">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i> Ainda não há produtos cadastrados nesta categoria.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

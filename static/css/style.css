@@ -1,0 +1,216 @@
+/* Estilos gerais */
+:root {
+    --todah-primary: #8B0000;    /* Vermelho vinho */
+    --todah-secondary: #DAA520;  /* Dourado */
+    --todah-light: #F9F5F0;      /* Creme claro */
+    --todah-dark: #4A0000;       /* Vermelho vinho escuro */
+    --todah-accent: #FFD700;     /* Dourado mais claro */
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Georgia', serif;
+    background-color: #FFF9F5;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.bg-todah {
+    background-color: var(--todah-primary);
+}
+
+.bg-todah-light {
+    background-color: var(--todah-light);
+}
+
+.text-todah {
+    color: var(--todah-primary);
+}
+
+/* Navegação de categorias */
+.category-nav {
+    background-color: var(--todah-light);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid rgba(218, 165, 32, 0.3);
+}
+
+.category-nav .nav-link {
+    margin: 0 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    color: var(--todah-primary);
+}
+
+.category-nav .nav-link:hover {
+    background-color: rgba(218, 165, 32, 0.2);
+}
+
+.category-nav .nav-link.active {
+    background-color: var(--todah-primary);
+    color: white;
+}
+
+/* Seção de últimos produtos */
+.latest-products-section {
+    background-color: var(--todah-light);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(139, 0, 0, 0.1);
+    border: 1px solid rgba(218, 165, 32, 0.3);
+}
+
+/* Estilos para os cards de produtos */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(139, 0, 0, 0.1) !important;
+}
+
+.product-image {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.3);
+}
+
+.card-body .description {
+    height: 75px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.card-body .price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--todah-primary);
+    margin-bottom: 15px;
+}
+
+.card-body .card-title {
+    color: var(--todah-dark);
+    font-weight: 600;
+}
+
+/* Badge personalizado */
+.badge.bg-primary {
+    background-color: #8B0000;
+}
+
+/* Estilos para o painel administrativo */
+.admin-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.stock-control {
+    max-width: 150px;
+}
+
+/* Responsividade adicional */
+@media (max-width: 767px) {
+    .product-image {
+        height: 180px;
+    }
+}
+
+/* Animações */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Estilo para o botão de compra do WhatsApp */
+.btn-success {
+    background-color: #25D366;
+    border-color: #25D366;
+}
+
+.btn-success:hover, .btn-success:focus {
+    background-color: #128C7E;
+    border-color: #128C7E;
+}
+
+/* Estilo para mensagem de produto esgotado */
+.badge-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Título elegantes */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Georgia', serif;
+}
+
+.display-5 {
+    color: var(--todah-primary);
+    font-weight: 600;
+}
+
+.lead {
+    color: #666;
+}
+
+/* Bordas douradas para cards e elementos destacados */
+.card, .btn-primary, .btn-outline-primary {
+    border-color: var(--todah-secondary);
+}
+
+/* Botões personalizados */
+.btn-primary {
+    background-color: var(--todah-primary);
+    border-color: var(--todah-primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--todah-dark);
+    border-color: var(--todah-dark);
+}
+
+.btn-outline-primary {
+    color: var(--todah-primary);
+    border-color: var(--todah-primary);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+    background-color: var(--todah-primary);
+    color: white;
+}
+
+/* Navbar personalizada */
+.navbar-dark.bg-todah {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--todah-accent);
+}
